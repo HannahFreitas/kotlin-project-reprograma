@@ -1,12 +1,14 @@
 package br.com.projetokotlin.model
 
+
 import java.time.LocalDateTime
 
 
 data class User(
     var id: Long? = null,
-    val email: String,
-    val password: String,
-    val role: List<String> = listOf("pf", "pj"),
+    var email: String = "",
+    var password: String = "",
+    var role: List<String> = mutableListOf("pf", "pj"),
     val createdAt: LocalDateTime = LocalDateTime.now()
+
 )
