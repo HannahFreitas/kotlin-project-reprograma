@@ -20,4 +20,8 @@ class UserService(private var user: List<User> = ArrayList(),
         return userViewMapper.map(users)
     }
 
+    fun findByEmail(email: String): User {
+        return user.first { email == it.email }
+    }
+
 }
