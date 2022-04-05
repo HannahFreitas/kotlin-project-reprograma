@@ -7,6 +7,7 @@ import br.com.projetokotlin.message.Message
 import br.com.projetokotlin.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.CookieValue
 import org.springframework.web.bind.annotation.GetMapping
@@ -21,7 +22,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userService: UserService) {
+class UserController(private val userService: UserService, @Value("\${SECRET}") private val env: String) {
     @PostMapping("/register")
     fun register(@RequestBody @Valid userForm: UserForm): ResponseEntity<UserView> {
         val userView = userService.save(userForm)
@@ -42,7 +43,7 @@ class UserController(private val userService: UserService) {
         val jwt = Jwts.builder()
             .setIssuer(issuer)
             .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) //1 dia
-            .signWith(SignatureAlgorithm.HS512, "hannahdariellyrafaelaingrydttalitareprogramernacreditassquadrelationsdatriboautofintentandofazeroprojetofuncionar").compact()
+            .signWith(SignatureAlgorithm.HS512, env).compact()
 
         val cookie = Cookie("jwt", jwt)
         cookie.isHttpOnly = true
@@ -60,7 +61,7 @@ class UserController(private val userService: UserService) {
             }
 
             val body = Jwts.parser()
-                .setSigningKey("hannahdariellyrafaelaingrydttalitareprogramernacreditassquadrelationsdatriboautofintentandofazeroprojetofuncionar")
+                .setSigningKey(env)
                 .parseClaimsJws(jwt).body
 
             return ResponseEntity.ok(userService.getById(body.issuer.toLong()))
