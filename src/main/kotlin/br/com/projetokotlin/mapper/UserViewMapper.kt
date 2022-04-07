@@ -10,7 +10,6 @@ class UserViewMapper: Mapper<User, UserView> {
         return UserView(
             id = t.id,
             email = t.email,
-            password = t.password,
             role = t.role,
             createdAt = t.createdAt
         )

@@ -10,22 +10,27 @@ import org.springframework.stereotype.Service
 
 
 @Service
-class UserService(private var user: List<User> = ArrayList(),
+class UserService(private var users: MutableList<User> = mutableListOf(),
                   private val userFormMapper: UserFormMapper,
                   private val userViewMapper: UserViewMapper
 ) {
     fun save(userForm: UserForm): UserView {
         val passwordEnconder = BCryptPasswordEncoder()
-        val users = userFormMapper.map(userForm)
-        users.id = user.size.toLong() + 1
-        users.password = passwordEnconder.encode(userForm.password)
-        user = user.plus(users)
-        return userViewMapper.map(users)
+        val user = userFormMapper.map(userForm)
+        user.id = users.size.toLong() + 1
+        user.password = passwordEnconder.encode(userForm.password)
+        users.add(user)
+        return userViewMapper.map(user)
+    }
+
+    fun findById(id: Long): UserView {
+        val userId = users.first { id == it.id }
+        return userViewMapper.map(userId)
     }
 
 
     fun findByEmail(email: String): User {
-        return user.first { email == it.email }
+        return users.first { email == it.email }
     }
 
     fun comparePassword(password: String, passwordEnconde: String): Boolean {
@@ -33,7 +38,7 @@ class UserService(private var user: List<User> = ArrayList(),
     }
 
     fun getById(id: Long): User {
-        return user.first { id == it.id }
+        return users.first { id == it.id }
     }
 
 }

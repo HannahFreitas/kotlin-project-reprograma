@@ -7,12 +7,10 @@ import org.springframework.stereotype.Component
 @Component
 class UserFormMapper: Mapper<UserForm, User> {
 
-    override fun map(t: UserForm): User {
-        return User(
+    override fun map(t: UserForm) = User(
             email = t.email,
             password = t.password,
             role = t.role
         )
-    }
 
 }
