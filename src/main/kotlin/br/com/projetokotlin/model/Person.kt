@@ -10,7 +10,7 @@ data class Person(
     val phone: String,
     val whatsapp: Boolean,
     val cpf: String,
-    val user: UserView,
+    val user: UserView,//trocar pra user
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updateAt: LocalDateTime? = null
+    val updateAt: LocalDateTime = LocalDateTime.now()
 )

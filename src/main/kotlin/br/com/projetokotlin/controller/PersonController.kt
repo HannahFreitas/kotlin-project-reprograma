@@ -15,7 +15,7 @@ import javax.validation.Valid
 @RestController
 @RequestMapping("/person")
 class PersonController(private val personService: PersonService) {
-    @PostMapping("/register")
+    @PostMapping
     fun register(@RequestBody @Valid personForm: PersonForm): ResponseEntity<PersonView> {
             val person = personService.savePerson(personForm)
             return ResponseEntity.status(201).body(person)

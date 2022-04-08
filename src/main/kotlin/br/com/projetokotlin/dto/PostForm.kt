@@ -5,9 +5,9 @@ import javax.validation.constraints.NotNull
 
 data class PostForm(
     @field:NotEmpty
-    val title: String,
+    val title: String? = null,
     @field:NotEmpty
-    val message: String,
+    val message: String? = null,
     @field:NotNull
-    val idPerson: Long
+    val idPerson: Long? = null
 )

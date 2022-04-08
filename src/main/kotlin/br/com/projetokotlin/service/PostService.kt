@@ -14,15 +14,13 @@ class PostService(private var posts: MutableList<Post> = mutableListOf(),
                   private val postViewMapper: PostViewMapper,
                   private val personService: PersonService
 ) {
-    fun createPost(postForm: PostForm): PostView {
-        val person = personService.findById(postForm.idPerson).id
-        if(person != postForm.idPerson) {
-            throw Exception("Nao é possível criar essa publicaçao, pois o usuário nao existe!")
-        }
+    fun createPost(postForm: PostForm): Post {
+        personService.findById(postForm.idPerson).id
+
         val post = postFormMapper.map(postForm)
         post.id = posts.size.toLong() + 1
         posts.add(post)
-        return postViewMapper.map(post)
+        return post
     }
 
     fun getAll(): List<PostView> {
@@ -36,18 +34,10 @@ class PostService(private var posts: MutableList<Post> = mutableListOf(),
 
     fun update(id: Long, updatePostForm: UpdatePostForm): PostView {
         val post = posts.first { it.id == id }
-        val updatePost = Post(
-            id = post.id,
-            title = updatePostForm.title,
-            message = updatePostForm.message,
-            person = post.person,
-            status = updatePostForm.status,
-            createdAt = post.createdAt,
-            updatedAt = updatePostForm.updatedAt
-        )
+        post.title = updatePostForm.title
+        post.message = updatePostForm.message
 
-        posts.add(updatePost)
-        return postViewMapper.map(updatePost)
+        return postViewMapper.map(post)
     }
 
 }

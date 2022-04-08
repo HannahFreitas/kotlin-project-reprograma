@@ -5,10 +5,10 @@ import java.time.LocalDateTime
 
 data class Post(
     var id: Long? = null,
-    val title: String,
-    val message: String,
-    val person: PersonView,
+    var title: String,
+    var message: String,
+    val person: PersonView,//trocar pra person
     val status: StatusPost = StatusPost.ABERTO,
     val createdAt: LocalDateTime = LocalDateTime.now(),
-    val updatedAt: LocalDateTime? = null
+    val updatedAt: LocalDateTime = LocalDateTime.now()
 )
