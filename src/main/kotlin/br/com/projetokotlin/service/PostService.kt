@@ -28,4 +28,9 @@ class PostService(private val posts: MutableList<Post> = mutableListOf(),
         return posts.map { postViewMapper.map(it) }
     }
 
+    fun findById(id: Long): PostView {
+        val postId = posts.first { id == it.id}
+        return postViewMapper.map(postId)
+    }
+
 }
