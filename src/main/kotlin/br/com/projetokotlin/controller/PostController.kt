@@ -2,11 +2,13 @@ package br.com.projetokotlin.controller
 
 import br.com.projetokotlin.dto.PostForm
 import br.com.projetokotlin.dto.PostView
+import br.com.projetokotlin.dto.UpdatePostForm
 import br.com.projetokotlin.service.PostService
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
 import org.springframework.web.bind.annotation.PostMapping
+import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
 import org.springframework.web.bind.annotation.RestController
@@ -30,5 +32,11 @@ class PostController(private val postService: PostService) {
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): PostView {
         return postService.findById(id)
+    }
+
+    @PutMapping("/update/{id}")
+    fun updatePost(@PathVariable id: Long, @RequestBody @Valid updatePostForm: UpdatePostForm): ResponseEntity<PostView> {
+        val updatePost = postService.update(id, updatePostForm)
+        return ResponseEntity.status(200).body(updatePost)
     }
 }
