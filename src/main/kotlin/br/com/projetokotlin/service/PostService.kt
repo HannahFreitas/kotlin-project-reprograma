@@ -24,4 +24,8 @@ class PostService(private val posts: MutableList<Post> = mutableListOf(),
         return postViewMapper.map(post)
     }
 
+    fun getAll(): List<PostView> {
+        return posts.map { postViewMapper.map(it) }
+    }
+
 }
