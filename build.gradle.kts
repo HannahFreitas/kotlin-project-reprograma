@@ -27,6 +27,7 @@ dependencies {
 	implementation("org.jetbrains.kotlin:kotlin-noarg")
 	implementation("org.flywaydb:flyway-core:8.5.7")
 	runtimeOnly("org.flywaydb:flyway-gradle-plugin:8.5.7")
+	implementation("org.springframework.boot:spring-boot-starter-cache:2.6.6")
 	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")

@@ -6,6 +6,8 @@ import br.com.projetokotlin.dto.UpdatePostForm
 import br.com.projetokotlin.mapper.PostViewMapper
 import br.com.projetokotlin.model.Post
 import br.com.projetokotlin.service.PostService
+import org.springframework.cache.annotation.CacheEvict
+import org.springframework.cache.annotation.Cacheable
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort
@@ -29,6 +31,7 @@ class PostController(private val postService: PostService,
 
     @PostMapping
     @Transactional
+    @CacheEvict(value = ["posts"], allEntries = true)
     fun savePost(@RequestBody @Valid postForm: PostForm): ResponseEntity<PostView> {
         val post = postService.createPost(postForm)
         val postMapper = postViewMapper.map(post)
@@ -36,6 +39,7 @@ class PostController(private val postService: PostService,
     }
 
     @GetMapping
+    @Cacheable("posts")
     fun getAllPost(@PageableDefault(size = 5, sort = ["createdAt"], direction = Sort.Direction.DESC) pageable: Pageable): Page<PostView> {
         return postService.getAll(pageable)
     }
@@ -47,6 +51,7 @@ class PostController(private val postService: PostService,
 
     @PutMapping("/{id}")
     @Transactional
+    @CacheEvict(value = ["posts"], allEntries = true)
     fun updatePost(@PathVariable id: Long, @RequestBody @Valid updatePostForm: UpdatePostForm): ResponseEntity<PostView> {
         val updatePost = postService.update(id, updatePostForm)
         return ResponseEntity.status(200).body(updatePost)
