@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component
 class PersonFormMapper(private val serviceUser: UserService): Mapper<PersonForm, Person> {
     override fun map(t: PersonForm) = Person(
             name = t.name,
-            adress = t.adress,
+            address = t.adress,
             phone = t.phone,
             whatsapp = t.whatsapp,
             cpf = t.cpf,

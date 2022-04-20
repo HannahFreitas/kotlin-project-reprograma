@@ -3,37 +3,40 @@ package br.com.projetokotlin.service
 import br.com.projetokotlin.dto.PostForm
 import br.com.projetokotlin.dto.PostView
 import br.com.projetokotlin.dto.UpdatePostForm
+import br.com.projetokotlin.exception.NotFoundException
 import br.com.projetokotlin.mapper.PostFormMapper
 import br.com.projetokotlin.mapper.PostViewMapper
 import br.com.projetokotlin.model.Post
+import br.com.projetokotlin.repository.PostRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
-class PostService(private var posts: MutableList<Post> = mutableListOf(),
+class PostService(private val postRepository: PostRepository,
+                  private val notFoundMessage: String = "Postagem nao encontrado.",
                   private val postFormMapper: PostFormMapper,
                   private val postViewMapper: PostViewMapper,
                   private val personService: PersonService
 ) {
     fun createPost(postForm: PostForm): Post {
-        personService.findById(postForm.idPerson).id
+        personService.findById(postForm.idPerson)?.id
 
         val post = postFormMapper.map(postForm)
-        post.id = posts.size.toLong() + 1
-        posts.add(post)
+        postRepository.save(post)
+
         return post
     }
 
     fun getAll(): List<PostView> {
-        return posts.map { postViewMapper.map(it) }
+        return postRepository.findAll().map { postViewMapper.map(it) }
     }
 
-    fun findById(id: Long): PostView {
-        val postId = posts.first { id == it.id}
-        return postViewMapper.map(postId)
+    fun findById(id: Long): Post? {
+        return postRepository.findById(id).orElseThrow{ NotFoundException(notFoundMessage) }
     }
 
     fun update(id: Long, updatePostForm: UpdatePostForm): PostView {
-        val post = posts.first { it.id == id }
+        val post = postRepository.findAll().first { it.id == id } ?: throw NotFoundException(notFoundMessage)
         post.title = updatePostForm.title
         post.message = updatePostForm.message
 

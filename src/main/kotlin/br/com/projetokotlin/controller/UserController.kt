@@ -18,18 +18,21 @@ import org.springframework.web.bind.annotation.RestController
 import java.util.*
 import javax.servlet.http.Cookie
 import javax.servlet.http.HttpServletResponse
+import javax.transaction.Transactional
 import javax.validation.Valid
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userService: UserService, @Value("\${SECRET}") private val env: String) {
-    @PostMapping("/register")
+class UserController(private val userService: UserService) {
+    @PostMapping
+    @Transactional
     fun register(@RequestBody @Valid userForm: UserForm): ResponseEntity<UserView> {
         val userView = userService.save(userForm)
         return ResponseEntity.status(201).body(userView)
     }
 
     @PostMapping("/login")
+    @Transactional
     fun login(@RequestBody @Valid loginForm: LoginForm, response: HttpServletResponse): ResponseEntity<Any> {
         val user = userService.findByEmail(loginForm.email)
         val password = userService.comparePassword(loginForm.password, user.password)
@@ -43,7 +46,8 @@ class UserController(private val userService: UserService, @Value("\${SECRET}") 
         val jwt = Jwts.builder()
             .setIssuer(issuer)
             .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) //1 dia
-            .signWith(SignatureAlgorithm.HS512, env).compact()
+            .signWith(SignatureAlgorithm.HS512, "SECRET=hannahdariellyrafaelaingrydttalitareprogramernacreditassquadrelationsdatriboautofintentandofazeroprojetofuncionar"
+            ).compact()
 
         val cookie = Cookie("jwt", jwt)
         cookie.isHttpOnly = true
@@ -61,10 +65,10 @@ class UserController(private val userService: UserService, @Value("\${SECRET}") 
             }
 
             val body = Jwts.parser()
-                .setSigningKey(env)
+                .setSigningKey("SECRET=hannahdariellyrafaelaingrydttalitareprogramernacreditassquadrelationsdatriboautofintentandofazeroprojetofuncionar")
                 .parseClaimsJws(jwt).body
 
-            return ResponseEntity.ok(userService.getById(body.issuer.toLong()))
+            return ResponseEntity.ok(userService.findById(body.issuer.toLong()))
         } catch (e: Exception) {
             return ResponseEntity.status(401).body(Message("Unauthenticated"))
         }

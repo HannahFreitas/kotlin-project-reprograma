@@ -2,37 +2,42 @@ package br.com.projetokotlin.service
 
 import br.com.projetokotlin.dto.PersonForm
 import br.com.projetokotlin.dto.PersonView
+import br.com.projetokotlin.exception.NotFoundException
 import br.com.projetokotlin.mapper.PersonFormMapper
 import br.com.projetokotlin.mapper.PersonViewMapper
 import br.com.projetokotlin.model.Person
 import br.com.projetokotlin.model.RolesStatus
+import br.com.projetokotlin.repository.PersonRepository
 import org.springframework.stereotype.Service
+import java.util.*
 
 @Service
-class PersonService(private var persons: MutableList<Person> = mutableListOf(),
+class PersonService(private val personRepository: PersonRepository,
+                    private val notFoundMessage: String = "Cadastro nao encontrado.",
                     private val personViewMapper: PersonViewMapper,
                     private val personFormMapper: PersonFormMapper,
                     private val userService: UserService
 ) {
     fun savePerson(personForm: PersonForm): PersonView {
-        val role = userService.findById(personForm.idUser).role
+        val role = userService.findById(personForm.idUser)?.role
         if(role != RolesStatus.PF) {
-            throw Exception("Nao é permitido cadastrar uma ${role.display}, só é permitido ${RolesStatus.PF.display}!")
+            if (role != null) {
+                throw Exception("Nao é permitido cadastrar uma ${role.display}, só é permitido ${RolesStatus.PF.display}!")
+            }
         }
+
         val person = personFormMapper.map(personForm)
-        person.id = persons.size.toLong() + 1
-        persons.add(person)
+        personRepository.save(person)
 
         return personViewMapper.map(person)
     }
 
     fun getAll(): List<PersonView> {
-        return persons.map { personViewMapper.map(it) }
+        return personRepository.findAll().map { personViewMapper.map(it) }
     }
 
-    fun findById(id: Long): PersonView {
-        val personId = persons.first { id == it.id }
-        return personViewMapper.map(personId)
+    fun findById(id: Long?): Person? {
+        return personRepository.findById(id!!).orElseThrow{NotFoundException(notFoundMessage)}
     }
 
 }

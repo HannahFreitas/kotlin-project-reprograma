@@ -5,6 +5,9 @@ plugins {
 	id("io.spring.dependency-management") version "1.0.11.RELEASE"
 	kotlin("jvm") version "1.6.10"
 	kotlin("plugin.spring") version "1.6.10"
+	kotlin("plugin.jpa") version "1.3.72"
+	id("org.jetbrains.kotlin.plugin.noarg") version "1.6.20"
+	id("org.flywaydb.flyway") version "8.5.8"
 }
 
 group = "br.com"
@@ -20,6 +23,11 @@ dependencies {
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
 	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.springframework.boot:spring-boot-starter-data-jpa")
+	implementation("org.jetbrains.kotlin:kotlin-noarg")
+	implementation("org.flywaydb:flyway-core:8.5.7")
+	runtimeOnly("org.flywaydb:flyway-gradle-plugin:8.5.7")
+	runtimeOnly("org.postgresql:postgresql")
 	implementation("org.jetbrains.kotlin:kotlin-reflect")
 	implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
 	implementation("io.jsonwebtoken:jjwt-api:0.11.2")
@@ -39,3 +47,5 @@ tasks.withType<KotlinCompile> {
 tasks.withType<Test> {
 	useJUnitPlatform()
 }
+
+
