@@ -21,7 +21,7 @@ class PostService(private val postRepository: PostRepository,
                   private val personService: PersonService
 ) {
     fun createPost(postForm: PostForm): Post {
-        personService.findById(postForm.idPerson)?.id
+        personService.findById(postForm.person_id)?.id
 
         val post = postFormMapper.map(postForm)
         postRepository.save(post)

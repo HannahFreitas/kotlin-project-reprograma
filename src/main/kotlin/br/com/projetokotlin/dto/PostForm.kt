@@ -9,5 +9,5 @@ data class PostForm(
     @field:NotEmpty
     val message: String? = null,
     @field:NotNull
-    val idPerson: Long? = null
+    val person_id: Long? = null
 )

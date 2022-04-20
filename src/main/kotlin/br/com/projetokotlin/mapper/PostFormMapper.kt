@@ -10,7 +10,7 @@ class PostFormMapper(private val personService: PersonService): Mapper<PostForm,
     override fun map(t: PostForm) = Post(
         title = t.title!!,
         message = t.message!!,
-        person = personService.findById(t.idPerson!!)
+        person = personService.findById(t.person_id!!)
     )
 
 }
