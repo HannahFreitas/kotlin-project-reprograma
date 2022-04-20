@@ -8,6 +8,8 @@ import br.com.projetokotlin.mapper.PostFormMapper
 import br.com.projetokotlin.mapper.PostViewMapper
 import br.com.projetokotlin.model.Post
 import br.com.projetokotlin.repository.PostRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import java.util.*
 
@@ -27,8 +29,8 @@ class PostService(private val postRepository: PostRepository,
         return post
     }
 
-    fun getAll(): List<PostView> {
-        return postRepository.findAll().map { postViewMapper.map(it) }
+    fun getAll(pageable: Pageable): Page<PostView> {
+        return postRepository.findAll(pageable).map { postViewMapper.map(it) }
     }
 
     fun findById(id: Long): Post? {

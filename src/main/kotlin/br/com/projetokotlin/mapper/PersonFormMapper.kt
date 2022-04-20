@@ -9,10 +9,10 @@ import org.springframework.stereotype.Component
 class PersonFormMapper(private val serviceUser: UserService): Mapper<PersonForm, Person> {
     override fun map(t: PersonForm) = Person(
             name = t.name,
-            address = t.adress,
+            address = t.address,
             phone = t.phone,
             whatsapp = t.whatsapp,
             cpf = t.cpf,
-            user = serviceUser.findById(t.idUser)
+            user = serviceUser.findById(t.user_id)
         )
 }

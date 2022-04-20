@@ -8,7 +8,7 @@ data class PersonForm(
     @field:NotEmpty(message = "Nome está vazio!")
     val name: String,
     @field:NotEmpty(message = "Informe o seu endereço.")
-    val adress: String,
+    val address: String,
     @field:NotEmpty(message = "Informe o número do seu telefone!")
     val phone: String,
     @NotNull(message = "Informe se o seu telefone é whatsapp.")
@@ -16,5 +16,5 @@ data class PersonForm(
     @NotEmpty(message = "Cpf vazio!")
     val cpf: String,
     @NotNull(message = "Informe a identificaçao do seu usuário no sistema!")
-    val idUser: Long
+    val user_id: Long
 )

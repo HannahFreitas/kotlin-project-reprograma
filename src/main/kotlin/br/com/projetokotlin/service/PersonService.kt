@@ -19,7 +19,7 @@ class PersonService(private val personRepository: PersonRepository,
                     private val userService: UserService
 ) {
     fun savePerson(personForm: PersonForm): PersonView {
-        val role = userService.findById(personForm.idUser)?.role
+        val role = userService.findById(personForm.user_id)?.role
         if(role != RolesStatus.PF) {
             if (role != null) {
                 throw Exception("Nao é permitido cadastrar uma ${role.display}, só é permitido ${RolesStatus.PF.display}!")

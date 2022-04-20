@@ -6,6 +6,8 @@ import br.com.projetokotlin.dto.UpdatePostForm
 import br.com.projetokotlin.mapper.PostViewMapper
 import br.com.projetokotlin.model.Post
 import br.com.projetokotlin.service.PostService
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.GetMapping
 import org.springframework.web.bind.annotation.PathVariable
@@ -13,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -31,8 +34,8 @@ class PostController(private val postService: PostService,
     }
 
     @GetMapping
-    fun getAllPost(): List<PostView> {
-        return postService.getAll()
+    fun getAllPost(@RequestParam(required = false) pageable: Pageable): Page<PostView> {
+        return postService.getAll(pageable)
     }
 
     @GetMapping("/{id}")
