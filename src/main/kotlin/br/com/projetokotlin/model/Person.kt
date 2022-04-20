@@ -27,5 +27,5 @@ data class Person(
     @Column(name = "createdat")
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @Column(name = "updatedat")
-    val updateAt: LocalDateTime = LocalDateTime.now()
+    val updateAt: LocalDateTime? = null
 )

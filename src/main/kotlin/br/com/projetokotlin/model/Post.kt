@@ -19,5 +19,5 @@ data class Post(
     @Column(name = "createdat")
     val createdAt: LocalDateTime = LocalDateTime.now(),
     @Column(name = "updatedat")
-    val updatedAt: LocalDateTime = LocalDateTime.now()
+    val updatedAt: LocalDateTime? = null
 )

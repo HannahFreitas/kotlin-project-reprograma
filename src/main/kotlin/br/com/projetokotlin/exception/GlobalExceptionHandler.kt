@@ -3,14 +3,15 @@ package br.com.projetokotlin.exception
 import br.com.projetokotlin.dto.ErrorView
 import org.springframework.http.HttpStatus
 import org.springframework.web.bind.MethodArgumentNotValidException
+import org.springframework.web.bind.annotation.ExceptionHandler
 import org.springframework.web.bind.annotation.ResponseStatus
 import org.springframework.web.bind.annotation.RestControllerAdvice
 import javax.servlet.http.HttpServletRequest
 
 @RestControllerAdvice
-class ExceptionHandler {
+class GlobalExceptionHandler {
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(NotFoundException::class)
+    @ExceptionHandler(NotFoundException::class)
     @ResponseStatus(HttpStatus.NOT_FOUND)
     fun handleNotFound(exception: NotFoundException, request: HttpServletRequest): ErrorView {
         return ErrorView(
@@ -21,7 +22,7 @@ class ExceptionHandler {
         )
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(Exception::class)
+    @ExceptionHandler(Exception::class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     fun handleServerError(exception: Exception, request: HttpServletRequest): ErrorView {
         return ErrorView(
@@ -32,7 +33,7 @@ class ExceptionHandler {
         )
     }
 
-    @org.springframework.web.bind.annotation.ExceptionHandler(MethodArgumentNotValidException::class)
+    @ExceptionHandler(MethodArgumentNotValidException::class)
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     fun handleValidationError(exception: MethodArgumentNotValidException, request: HttpServletRequest): ErrorView {
         val errorMessage = HashMap<String, String?>()
