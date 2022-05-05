@@ -7,18 +7,19 @@ import br.com.projetokotlin.exception.NotFoundException
 import br.com.projetokotlin.mapper.PostFormMapper
 import br.com.projetokotlin.mapper.PostViewMapper
 import br.com.projetokotlin.model.Post
+import br.com.projetokotlin.model.StatusPost
 import br.com.projetokotlin.repository.PostRepository
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
-import java.util.*
+
 
 @Service
 class PostService(private val postRepository: PostRepository,
-                  private val notFoundMessage: String = "Postagem nao encontrado.",
                   private val postFormMapper: PostFormMapper,
                   private val postViewMapper: PostViewMapper,
-                  private val personService: PersonService
+                  private val personService: PersonService,
+                  private val notFoundMessage: String = "Postagem nao encontrado."
 ) {
     fun createPost(postForm: PostForm): Post {
         personService.findById(postForm.person_id)?.id
@@ -43,6 +44,10 @@ class PostService(private val postRepository: PostRepository,
         post.message = updatePostForm.message
 
         return postViewMapper.map(post)
+    }
+
+    fun findByStatus(pageable: Pageable): Page<Post> {
+        return postRepository.findByStatus(StatusPost.ABERTO, pageable)
     }
 
 }

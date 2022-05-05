@@ -19,6 +19,12 @@ repositories {
 }
 
 dependencies {
+	// https://mvnrepository.com/artifact/org.testcontainers/testcontainers-bom
+	implementation("org.testcontainers:testcontainers-bom:1.17.1")
+	// https://mvnrepository.com/artifact/org.testcontainers/postgresql
+	testImplementation("org.testcontainers:postgresql:1.17.1")
+	// https://mvnrepository.com/artifact/org.testcontainers/junit-jupiter
+	testImplementation("org.testcontainers:junit-jupiter:1.17.1")
 	implementation("org.springframework.boot:spring-boot-starter-validation")
 	implementation("org.springframework.boot:spring-boot-starter-web")
 	implementation("com.fasterxml.jackson.module:jackson-module-kotlin")
@@ -36,6 +42,12 @@ dependencies {
 	runtimeOnly("io.jsonwebtoken:jjwt-orgjson:0.11.2")
 	developmentOnly("org.springframework.boot:spring-boot-devtools")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
+	// https://mvnrepository.com/artifact/io.mockk/mockk
+	testImplementation("io.mockk:mockk:1.12.3")
+	// https://mvnrepository.com/artifact/org.assertj/assertj-core
+	testImplementation("org.assertj:assertj-core:3.22.0")
+
+
 }
 
 tasks.withType<KotlinCompile> {

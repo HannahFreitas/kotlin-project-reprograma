@@ -21,3 +21,4 @@ data class Post(
     @Column(name = "updatedat")
     val updatedAt: LocalDateTime? = null
 )
+

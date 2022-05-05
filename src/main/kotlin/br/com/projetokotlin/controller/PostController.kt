@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.PutMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RequestParam
 import org.springframework.web.bind.annotation.RestController
 import javax.transaction.Transactional
 import javax.validation.Valid
@@ -47,6 +46,11 @@ class PostController(private val postService: PostService,
     @GetMapping("/{id}")
     fun getById(@PathVariable id: Long): Post? {
         return postService.findById(id)
+    }
+
+    @GetMapping("/status")
+    fun status(pageable: Pageable): Page<Post> {
+        return postService.findByStatus(pageable)
     }
 
     @PutMapping("/{id}")
