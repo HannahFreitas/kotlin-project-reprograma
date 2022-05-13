@@ -46,6 +46,8 @@ dependencies {
 	testImplementation("io.mockk:mockk:1.12.3")
 	// https://mvnrepository.com/artifact/org.assertj/assertj-core
 	testImplementation("org.assertj:assertj-core:3.22.0")
+	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
+	testImplementation("org.springframework.security:spring-security-test")
 
 
 }
