@@ -48,6 +48,8 @@ dependencies {
 	testImplementation("org.assertj:assertj-core:3.22.0")
 	// https://mvnrepository.com/artifact/org.springframework.security/spring-security-test
 	testImplementation("org.springframework.security:spring-security-test")
+	// https://mvnrepository.com/artifact/org.amshove.kluent/kluent
+	testImplementation("org.amshove.kluent:kluent:1.68")
 
 
 }
