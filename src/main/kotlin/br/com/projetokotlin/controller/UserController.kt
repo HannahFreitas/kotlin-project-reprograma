@@ -4,6 +4,7 @@ import br.com.projetokotlin.dto.LoginForm
 import br.com.projetokotlin.dto.UserForm
 import br.com.projetokotlin.dto.UserView
 import br.com.projetokotlin.message.Message
+import br.com.projetokotlin.service.JwtTokenAuthenticationService
 import br.com.projetokotlin.service.UserService
 import io.jsonwebtoken.Jwts
 import io.jsonwebtoken.SignatureAlgorithm
@@ -23,7 +24,7 @@ import javax.validation.Valid
 
 @RestController
 @RequestMapping("/user")
-class UserController(private val userService: UserService) {
+class UserController(private val userService: UserService, private val jwtService: JwtTokenAuthenticationService) {
     @PostMapping
     @Transactional
     fun register(@RequestBody @Valid userForm: UserForm): ResponseEntity<UserView> {
@@ -43,16 +44,8 @@ class UserController(private val userService: UserService) {
 
 
         val issuer = user.id.toString()
-        val jwt = Jwts.builder()
-            .setIssuer(issuer)
-            .setExpiration(Date(System.currentTimeMillis() + 60 * 24 * 1000)) //1 dia
-            .signWith(SignatureAlgorithm.HS512, "SECRET=hannahdariellyrafaelaingrydttalitareprogramernacreditassquadrelationsdatriboautofintentandofazeroprojetofuncionar"
-            ).compact()
+        jwtService.addAuthentication(response, user.email, issuer)
 
-        val cookie = Cookie("jwt", jwt)
-        cookie.isHttpOnly = true
-
-        response.addCookie(cookie)
 
         return ResponseEntity.ok(Message("Sucess login"))
     }
@@ -64,11 +57,9 @@ class UserController(private val userService: UserService) {
                 return ResponseEntity.status(401).body(Message("Unauthenticated"))
             }
 
-            val body = Jwts.parser()
-                .setSigningKey("SECRET=hannahdariellyrafaelaingrydttalitareprogramernacreditassquadrelationsdatriboautofintentandofazeroprojetofuncionar")
-                .parseClaimsJws(jwt).body
+            val body = jwtService.addCookie(jwt)
 
-            return ResponseEntity.ok(userService.findById(body.issuer.toLong()))
+            return ResponseEntity.ok(userService.findById(body))
         } catch (e: Exception) {
             return ResponseEntity.status(401).body(Message("Unauthenticated"))
         }
